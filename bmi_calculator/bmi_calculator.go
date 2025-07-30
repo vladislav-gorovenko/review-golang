@@ -1,16 +1,28 @@
 package bmi_calculator
 
 import (
+	"errors"
 	"fmt"
 	"math"
 )
 
 func BMICalculator() {
-	weight := getCustomerWeight()
-	height := getCustomerHeight()
-	bmi := getCustomerBMI(height, weight)
-	bmiDescription := getBMIDescription(bmi)
-	printCustomerBMIResult(bmi, bmiDescription)
+	for {
+		weight, weightErr := getCustomerWeight()
+		if weightErr != nil {
+			panic(weightErr)
+		}
+		height, heightErr := getCustomerHeight()
+		if heightErr != nil {
+			panic(heightErr)
+		}
+		bmi := getCustomerBMI(height, weight)
+		bmiDescription := getBMIDescription(bmi)
+		printCustomerBMIResult(bmi, bmiDescription)
+		if doYouWantToRepeat() != true {
+			break
+		}
+	}
 }
 
 type BMI string
@@ -47,24 +59,24 @@ func getBMIDescription(bmi float64) BMI {
 	}
 }
 
-func getCustomerHeight() float64 {
+func getCustomerHeight() (float64, error) {
 	var height float64
 	fmt.Print("Enter your height: ")
 	_, err := fmt.Scan(&height)
-	if err != nil {
-		return 0
+	if err != nil || height < 0 {
+		return 0, errors.New("invalid height")
 	}
-	return height
+	return height, nil
 }
 
-func getCustomerWeight() float64 {
+func getCustomerWeight() (float64, error) {
 	var weight float64
 	fmt.Print("Enter your weight: ")
 	_, err := fmt.Scan(&weight)
-	if err != nil {
-		return 0
+	if err != nil || weight < 0 {
+		return 0, errors.New("invalid weight")
 	}
-	return weight
+	return weight, nil
 }
 
 func getCustomerBMI(height float64, weight float64) float64 {
@@ -72,5 +84,15 @@ func getCustomerBMI(height float64, weight float64) float64 {
 }
 
 func printCustomerBMIResult(bmi float64, description BMI) {
-	fmt.Printf("Your BMI is %v, which means - %v", bmi, description)
+	fmt.Printf("Your BMI is %v, which means - %v\n", bmi, description)
+}
+
+func doYouWantToRepeat() bool {
+	var answer bool
+	fmt.Print("Do you want to try again: ")
+	_, err := fmt.Scan(&answer)
+	if err != nil {
+		return false
+	}
+	return answer
 }
