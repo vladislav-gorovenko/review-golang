@@ -1,13 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"github.com/vladislav-gorovenko/review-golang/converter"
+	"github.com/vladislav-gorovenko/review-golang/bmi_calculator"
 )
 
 func main() {
-	var convertAmount = converter.GetAmountInput()
-	fromCurrency, toCurrency := converter.GetCurrencyInput()
-	converter.ConvertCurrency(fromCurrency, toCurrency, &convertAmount)
-	fmt.Printf("Converted amount: %.2f\n", convertAmount)
+	//var convertAmount = converter.GetAmountInput()
+	//fromCurrency, toCurrency := converter.GetCurrencyInput()
+	//converter.ConvertCurrency(fromCurrency, toCurrency, &convertAmount)
+	//fmt.Printf("Converted amount: %.2f\n", convertAmount)
+
+	bmi_calculator.BMICalculator()
 }
